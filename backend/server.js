@@ -1,61 +1,67 @@
 const express = require("express");
-const fs = require("fs");
-const cors = require("cors");
+const cors    = require("cors");
+const fs      = require("fs");
+const path    = require("path");
 
-const app = express();
-app.use(express.json());
+const app        = express();
+const DADOS_PATH = path.join(__dirname, "dados.json");
+const FRONT_PATH = path.join(__dirname, ".."); // pasta raiz do projeto
+
 app.use(cors());
+app.use(express.json());
 
-const FILE = "dados.json";
+// ── Serve os arquivos do frontend ─────────────────────
+app.use(express.static(FRONT_PATH));
 
-// 🔹 LER DADOS
+// ── Helpers ──────────────────────────────────────────
 function lerDados() {
-  if (!fs.existsSync(FILE)) return [];
-  return JSON.parse(fs.readFileSync(FILE));
+  try {
+    return JSON.parse(fs.readFileSync(DADOS_PATH, "utf-8"));
+  } catch {
+    return [];
+  }
 }
 
-// 🔹 SALVAR DADOS
 function salvarDados(dados) {
-  fs.writeFileSync(FILE, JSON.stringify(dados, null, 2));
+  fs.writeFileSync(DADOS_PATH, JSON.stringify(dados, null, 2), "utf-8");
 }
 
-// 🔹 GET - LISTAR ADOTANTES
+// ── Rotas API ─────────────────────────────────────────
+
 app.get("/adotantes", (req, res) => {
   res.json(lerDados());
 });
 
-// 🔹 POST - CADASTRAR
 app.post("/adotantes", (req, res) => {
   const dados = lerDados();
-  dados.push(req.body);
+  const novo  = {
+    id:       Date.now(),
+    nome:     req.body.nome,
+    cpf:      req.body.cpf,
+    telefone: req.body.telefone,
+    endereco: req.body.endereco,
+    moradia:  req.body.moradia,
+    animais:  req.body.animais,
+    espaco:   req.body.espaco,
+    status:   "analise"
+  };
+  dados.push(novo);
   salvarDados(dados);
-
-  res.json({ mensagem: "Adicionado com sucesso" });
+  res.json(novo);
 });
 
-// 🔹 PUT - ATUALIZAR (STATUS OU DADOS)
 app.put("/adotantes/:id", (req, res) => {
-  const dados = lerDados();
-  const id = req.params.id;
-
-  dados[id] = req.body;
+  const dados  = lerDados();
+  const id     = Number(req.params.id);
+  const pessoa = dados.find(a => a.id === id);
+  if (!pessoa) return res.status(404).json({ erro: "Não encontrado" });
+  pessoa.status = req.body.status;
   salvarDados(dados);
-
-  res.json({ mensagem: "Atualizado com sucesso" });
+  res.json(pessoa);
 });
 
-// 🔹 DELETE - REMOVER
-app.delete("/adotantes/:id", (req, res) => {
-  const dados = lerDados();
-  const id = req.params.id;
-
-  dados.splice(id, 1);
-  salvarDados(dados);
-
-  res.json({ mensagem: "Removido com sucesso" });
-});
-
-// 🔹 INICIAR SERVIDOR
+// ── Start ─────────────────────────────────────────────
 app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+  console.log("✅ Servidor rodando em http://localhost:3000");
+  console.log("🐾 Abra http://localhost:3000 no navegador!");
 });

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes — Toca dos Peludos</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .det-wrap {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    .det-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 8px 32px rgba(240,98,146,.13);
+      overflow: hidden;
+    }
+
+    /* topo colorido */
+    .det-top {
+      background: linear-gradient(135deg, #f06292, #ce93d8);
+      padding: 32px 28px 24px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .det-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 12px;
+    }
+
+    .det-nome  { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .det-status-wrap { display: flex; justify-content: center; }
+
+    /* corpo */
+    .det-body { padding: 28px; }
+
+    .det-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .det-field {
+      background: #fff9fb;
+      border: 2px solid #fce4ec;
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .det-field .lbl {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #e75480;
+      margin-bottom: 3px;
+    }
+
+    .det-field .val {
+      font-size: 14px;
+      font-weight: 700;
+      color: #444;
+    }
+
+    .det-field.full { grid-column: 1 / -1; }
+
+    /* ações */
+    .det-acoes {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .det-acoes button {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+
+    .det-acoes button:hover { opacity: .85; transform: translateY(-1px); }
+    .det-acoes button:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    .btn-det-aprov { background: linear-gradient(135deg, #a5d6a7, #81c784); color: #fff; }
+    .btn-det-reprov { background: linear-gradient(135deg, #ef9a9a, #e57373); color: #fff; }
+
+    .det-voltar {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #e75480;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .det-voltar:hover { opacity: .7; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="logo">🐾</span>
+    <h1>Toca dos Peludos</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="../index.html">Início</a>
+    <a href="pets.html">Pets</a>
+    <a href="Cadastro.HTML">Adotar</a>
+    <a href="dashboard.html">Solicitações</a>
+    <a href="admin.html">Admin</a>
+    <a href="#" onclick="sair()">Sair</a>
+  </nav>
+</header>
+
+<div class="det-wrap">
+  <div class="det-card" id="detCard">
+    <p style="text-align:center; padding:60px; color:#ccc;">Carregando...</p>
+  </div>
+  <a href="admin.html" class="det-voltar">← Voltar para solicitações</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">🐾</div>
+    <div class="footer-title">Toca dos Peludos</div>
+    <div class="footer-sub">Feito com muito 💕 — Todo pet merece um lar</div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+<script src="../js/detalhes.js"></script>
+<script>
+  protegerPagina();
+  function sair() {
+    localStorage.removeItem("adminLogado");
+    window.location.href = "../index.html";
+  }
+</script>
+</body>
+</html>

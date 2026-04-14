@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Toca dos Peludos</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .dash-hero {
+      background: linear-gradient(135deg, #f06292, #ce93d8);
+      padding: 36px 32px 28px;
+      color: #fff;
+      text-align: center;
+    }
+    .dash-hero h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+    .dash-hero p  { font-size: 14px; opacity: .85; }
+
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      max-width: 760px;
+      margin: -24px auto 36px;
+      padding: 0 20px;
+    }
+
+    .dash-stat {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(240,98,146,.15);
+    }
+    .dash-stat .num { font-size: 32px; font-weight: 800; line-height: 1; }
+    .dash-stat .lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #bbb; margin-top: 4px; }
+    .dash-stat.s-total   .num { color: #e75480; }
+    .dash-stat.s-analise .num { color: #ffb74d; }
+    .dash-stat.s-aprov   .num { color: #81c784; }
+    .dash-stat.s-reprov  .num { color: #e57373; }
+
+    .dash-wrap { max-width: 760px; margin: 0 auto; padding: 0 20px 60px; }
+
+    .dash-atalhos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .atalho {
+      background: #fff;
+      border-radius: 20px;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(240,98,146,.1);
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      display: block;
+    }
+    .atalho:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(240,98,146,.18); }
+    .atalho .a-icon { font-size: 32px; margin-bottom: 8px; }
+    .atalho .a-title { font-size: 14px; font-weight: 800; color: #444; margin-bottom: 3px; }
+    .atalho .a-sub   { font-size: 12px; color: #bbb; }
+
+    .lista-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 10px;
+      border-bottom: 1px solid #fce4ec;
+      transition: background .15s;
+      border-radius: 10px;
+    }
+    .lista-item:last-child { border-bottom: none; }
+    .lista-item:hover { background: #fff5f8; }
+
+    .li-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .li-nome { font-weight: 700; font-size: 14px; color: #444; }
+    .li-sub  { font-size: 12px; color: #bbb; margin-top: 1px; }
+    .li-right { margin-left: auto; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="logo">🐾</span>
+    <h1>Toca dos Peludos</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="../index.html">Início</a>
+    <a href="pets.html">Pets</a>
+    <a href="Cadastro.HTML">Adotar</a>
+    <a href="dashboard.html" class="ativo">Solicitações</a>
+    <a href="admin.html">Admin</a>
+    <a href="#" onclick="sair()">Sair</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<div class="dash-hero">
+  <h1>📊 Dashboard</h1>
+  <p>Visão geral das adoções</p>
+</div>
+
+<!-- Stats -->
+<div class="dash-stats">
+  <div class="dash-stat s-total">
+    <div class="num" id="total">0</div>
+    <div class="lbl">Total</div>
+  </div>
+  <div class="dash-stat s-analise">
+    <div class="num" id="analise">0</div>
+    <div class="lbl">Em análise</div>
+  </div>
+  <div class="dash-stat s-aprov">
+    <div class="num" id="aprovados">0</div>
+    <div class="lbl">Aprovados</div>
+  </div>
+  <div class="dash-stat s-reprov">
+    <div class="num" id="reprovados">0</div>
+    <div class="lbl">Reprovados</div>
+  </div>
+</div>
+
+<div class="dash-wrap">
+
+  <!-- Atalhos -->
+  <p class="section-title">Acesso rápido</p>
+  <div class="dash-atalhos">
+    <a href="Cadastro.HTML" class="atalho">
+      <div class="a-icon">🐾</div>
+      <div class="a-title">Novo cadastro</div>
+      <div class="a-sub">Registrar adotante</div>
+    </a>
+    <a href="admin.html" class="atalho">
+      <div class="a-icon">🛠️</div>
+      <div class="a-title">Gerenciar</div>
+      <div class="a-sub">Aprovar / reprovar</div>
+    </a>
+    <a href="pets.html" class="atalho">
+      <div class="a-icon">🐶</div>
+      <div class="a-title">Pets</div>
+      <div class="a-sub">Ver disponíveis</div>
+    </a>
+  </div>
+
+  <!-- Lista -->
+  <p class="section-title">Adotantes recentes</p>
+  <div class="lista-box">
+    <div class="lista-header">
+      <span>🐾</span>
+      <h2>Cadastros</h2>
+    </div>
+    <div id="lista">
+      <p class="lista-vazia">Nenhum adotante ainda.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">🐾</div>
+    <div class="footer-title">Toca dos Peludos</div>
+    <div class="footer-sub">Feito com muito 💕 — Todo pet merece um lar</div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+<script src="../js/dashboard.js"></script>
+<script>
+  protegerPagina();
+  function sair() {
+    localStorage.removeItem("adminLogado");
+    window.location.href = "../index.html";
+  }
+</script>
+</body>
+</html>

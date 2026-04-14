@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Toca dos Peludos</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* ── hero ── */
+    .admin-hero {
+      background: linear-gradient(135deg, #f06292, #ce93d8);
+      padding: 36px 32px 28px;
+      color: #fff;
+      text-align: center;
+    }
+    .admin-hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+    .admin-hero p  { font-size: 14px; opacity: .85; }
+
+    /* ── stats topo ── */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      max-width: 760px;
+      margin: -24px auto 32px;
+      padding: 0 20px;
+    }
+
+    .admin-stat {
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(240,98,146,.15);
+    }
+
+    .admin-stat .num  { font-size: 32px; font-weight: 800; line-height: 1; }
+    .admin-stat .lbl  { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #bbb; margin-top: 4px; }
+    .admin-stat.s-total   .num { color: #e75480; }
+    .admin-stat.s-analise .num { color: #ffb74d; }
+    .admin-stat.s-aprov   .num { color: #81c784; }
+    .admin-stat.s-reprov  .num { color: #e57373; }
+
+    /* ── filtros ── */
+    .admin-filtros {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
+
+    .f-btn {
+      padding: 7px 18px;
+      border-radius: 50px;
+      border: 2px solid #f8bbd0;
+      background: #fff;
+      color: #aaa;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .f-btn:hover, .f-btn.ativo {
+      background: linear-gradient(135deg, #f06292, #e75480);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* ── wrap ── */
+    .admin-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ── card solicitação ── */
+    .sol-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 16px rgba(240,98,146,.08);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .sol-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(240,98,146,.15); }
+    .sol-card.oculto { display: none; }
+
+    .sol-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .sol-info { flex: 1; min-width: 0; }
+    .sol-nome { font-size: 15px; font-weight: 800; color: #444; margin-bottom: 2px; }
+    .sol-sub  { font-size: 12px; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .sol-acoes {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-ver {
+      background: #fff;
+      border: 2px solid #f8bbd0;
+      color: #e75480;
+      padding: 7px 16px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-ver:hover { background: #fce4ec; }
+
+    .btn-ok {
+      background: linear-gradient(135deg, #a5d6a7, #81c784);
+      border: none; color: #fff;
+      padding: 7px 16px; border-radius: 50px;
+      font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .btn-nok {
+      background: linear-gradient(135deg, #ef9a9a, #e57373);
+      border: none; color: #fff;
+      padding: 7px 16px; border-radius: 50px;
+      font-family: inherit; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .btn-ok:hover, .btn-nok:hover { opacity: .85; }
+    .btn-ok:disabled, .btn-nok:disabled { opacity: .35; cursor: not-allowed; }
+
+    .vazio-admin {
+      text-align: center; color: #ccc; padding: 60px 0; font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="logo">🐾</span>
+    <h1>Toca dos Peludos</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="../index.html">Início</a>
+    <a href="pets.html">Pets</a>
+    <a href="Cadastro.HTML">Adotar</a>
+    <a href="dashboard.html">Solicitações</a>
+    <a href="admin.html" class="ativo">Admin</a>
+    <a href="#" onclick="sair()">Sair</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<div class="admin-hero">
+  <h1>🛠️ Área Admin</h1>
+  <p>Gerencie as solicitações de adoção</p>
+</div>
+
+<!-- Stats -->
+<div class="admin-stats">
+  <div class="admin-stat s-total">
+    <div class="num" id="st-total">0</div>
+    <div class="lbl">Total</div>
+  </div>
+  <div class="admin-stat s-analise">
+    <div class="num" id="st-analise">0</div>
+    <div class="lbl">Em análise</div>
+  </div>
+  <div class="admin-stat s-aprov">
+    <div class="num" id="st-aprov">0</div>
+    <div class="lbl">Aprovados</div>
+  </div>
+  <div class="admin-stat s-reprov">
+    <div class="num" id="st-reprov">0</div>
+    <div class="lbl">Reprovados</div>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="admin-filtros">
+  <button class="f-btn ativo" onclick="filtrarAdmin('todos', this)">🐾 Todos</button>
+  <button class="f-btn" onclick="filtrarAdmin('analise', this)">🟡 Em análise</button>
+  <button class="f-btn" onclick="filtrarAdmin('aprovado', this)">🟢 Aprovados</button>
+  <button class="f-btn" onclick="filtrarAdmin('reprovado', this)">🔴 Reprovados</button>
+</div>
+
+<!-- Lista -->
+<div class="admin-wrap">
+  <div id="listaAdmin">
+    <p class="vazio-admin">Carregando...</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">🐾</div>
+    <div class="footer-title">Toca dos Peludos</div>
+    <div class="footer-sub">Feito com muito 💕 — Todo pet merece um lar</div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+  protegerPagina();
+  function sair() {
+    localStorage.removeItem("adminLogado");
+    window.location.href = "../index.html";
+  }
+  function filtrarAdmin(status, btn) {
+    document.querySelectorAll('.f-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    document.querySelectorAll('.sol-card').forEach(card => {
+      card.classList.toggle('oculto', status !== 'todos' && card.dataset.status !== status);
+    });
+  }
+</script>
+</body>
+</html>

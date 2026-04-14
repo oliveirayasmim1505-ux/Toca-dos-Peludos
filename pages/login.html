@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Toca dos Peludos</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { padding: 20px; }
+    .login-box { width: 100%; max-width: 520px; margin: 40px auto; }
+    .login-icon { font-size: 48px; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="logo">🐾</span>
+    <h1>Toca dos Peludos</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="../index.html">Início</a>
+    <a href="pets.html">Pets</a>
+    <a href="Cadastro.HTML">Adotar</a>
+    <a href="login.html" class="ativo">Admin</a>
+  </nav>
+</header>
+
+<div class="container login-box">
+  <div class="login-icon">🔐</div>
+  <h2>Área do Admin</h2>
+  <form id="formLogin">
+    <input type="email" id="email" placeholder="✉️  Email" required>
+    <div style="position:relative;">
+      <input type="password" id="senha" placeholder="🔑  Senha" required style="padding-right:48px;">
+      <button type="button" onclick="toggleSenha()" id="btnOlho"
+        style="position:absolute;right:16px;top:50%;transform:translateY(-50%);
+               background:none;border:none;cursor:pointer;font-size:18px;padding:0;margin:0;width:auto;">
+        👁️
+      </button>
+    </div>
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="erro"></p>
+
+  <a href="../index.html" class="link">← Voltar ao início</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">🐾</div>
+    <div class="footer-title">Toca dos Peludos</div>
+    <div class="footer-sub">Feito com muito 💕 — Todo pet merece um lar</div>
+  </div>
+</footer>
+
+<script src="../js/login.js"></script>
+<script>
+  function toggleSenha() {
+    const s = document.getElementById("senha");
+    const b = document.getElementById("btnOlho");
+    s.type = s.type === "password" ? "text" : "password";
+    b.textContent = s.type === "password" ? "👁️" : "🙈";
+  }
+</script>
+</body>
+</html>

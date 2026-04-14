@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "nome": "Maria",
     "cpf": "453.455.498-26",
     "telefone": "(11) 91455-6075",
@@ -7,9 +8,10 @@
     "moradia": "Casa",
     "animais": "Sim",
     "espaco": "Médio",
-    "status": "Aprovado"
+    "status": "aprovado"
   },
   {
+    "id": 2,
     "nome": "Yasmim Maria",
     "cpf": "453.455.498-26",
     "telefone": "(11) 91455-6075",
@@ -17,46 +19,61 @@
     "moradia": "Casa",
     "animais": "Sim",
     "espaco": "Médio",
-    "status": "Em análise"
+    "status": "aprovado"
   },
   {
-    "nome": "yasmim",
+    "id": 3,
+    "nome": "Yasmim",
     "cpf": "453.455.498-26",
     "telefone": "(11) 63542-5862",
-    "endereco": "rua jardim alice",
+    "endereco": "Rua jardim alice",
     "moradia": "Casa",
     "animais": "Sim",
     "espaco": "Médio",
-    "status": "Em análise"
+    "status": "reprovado"
   },
   {
-    "nome": "mimi",
+    "id": 4,
+    "nome": "Mimi",
     "cpf": "453.455.498-26",
     "telefone": "(11) 91455-6075",
-    "endereco": "rua sideripolis",
+    "endereco": "Rua sideripolis",
     "moradia": "Casa",
     "animais": "Não",
     "espaco": "Grande",
-    "status": "Em análise"
+    "status": "reprovado"
   },
   {
-    "nome": "yasmim",
+    "id": 5,
+    "nome": "Yasmim",
     "cpf": "453.455.498-26",
     "telefone": "(11) 91455-6075",
-    "endereco": "rua do caralho",
+    "endereco": "Rua do campo",
     "moradia": "Casa",
     "animais": "Sim",
     "espaco": "Pequeno",
-    "status": "Em análise"
+    "status": "analise"
   },
   {
-    "nome": "Guilherme Carvalho ",
+    "id": 6,
+    "nome": "Guilherme Carvalho",
     "cpf": "123.456.784-19",
     "telefone": "(11) 91455-6075",
-    "endereco": "Rua Siderópolis, 130 - Jardim Jovaia, Guarulhos - SP, Brasil",
+    "endereco": "Rua Siderópolis, 130 - Jardim Jovaia, Guarulhos - SP",
     "moradia": "Casa",
     "animais": "Não",
     "espaco": "Pequeno",
-    "status": "Em análise"
+    "status": "analise"
+  },
+  {
+    "id": 7,
+    "nome": "Yasmim",
+    "cpf": "453.455.498-26",
+    "telefone": "(11) 91455-6075",
+    "endereco": "R. Siderópolis, 190",
+    "moradia": "Apartamento",
+    "animais": "Não",
+    "espaco": "Pequeno",
+    "status": "analise"
   }
 ]

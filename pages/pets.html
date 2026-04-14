@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pets disponíveis — Toca dos Peludos</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .pets-hero {
+      text-align: center;
+      padding: 48px 20px 32px;
+    }
+    .pets-hero h2 {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+    }
+    .pets-hero p { color: #aaa; font-size: 15px; }
+
+    /* filtros */
+    .filtros {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+      padding: 0 20px;
+    }
+
+    .filtro-btn {
+      padding: 9px 22px;
+      border-radius: 50px;
+      border: 2px solid #f8bbd0;
+      background: #fff;
+      color: #aaa;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .filtro-btn:hover,
+    .filtro-btn.ativo {
+      background: linear-gradient(135deg, #f06292, #e75480);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* grid */
+    .pets-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    .animais-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .animal-card {
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(240,98,146,.12);
+      transition: transform .25s, box-shadow .25s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .animal-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(240,98,146,.22);
+    }
+
+    .animal-card.oculto { display: none; }
+
+    .animal-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .animal-info {
+      padding: 18px 18px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .animal-info h3 { font-size: 17px; font-weight: 800; color: #4a4a4a; margin-bottom: 8px; }
+
+    .tags { margin-bottom: 10px; }
+
+    .tag {
+      display: inline-block;
+      background: #fce4ec;
+      color: #e75480;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin: 2px 2px 2px 0;
+    }
+    .tag.verde { background: #e8f5e9; color: #388e3c; }
+    .tag.azul  { background: #e3f2fd; color: #1565c0; }
+    .tag.roxo  { background: #f3e5f5; color: #7b1fa2; }
+
+    .animal-desc {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+
+    .animal-extra {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .animal-extra span {
+      font-size: 11px;
+      color: #aaa;
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .animal-extra span strong { display: block; color: #555; font-size: 13px; margin-top: 2px; }
+
+    .btn-adotar {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, #f06292, #e75480);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s;
+    }
+
+    .btn-adotar:hover { opacity: .85; transform: translateY(-1px); }
+
+    .nenhum {
+      text-align: center;
+      color: #ccc;
+      font-size: 15px;
+      padding: 60px 0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <span class="logo">🐾</span>
+    <h1>Toca dos Peludos</h1>
+  </div>
+  <nav class="nav-links">
+    <a href="../index.html">Início</a>
+    <a href="pets.html" class="ativo">Pets</a>
+    <a href="Cadastro.HTML">Adotar</a>
+    <a href="login.html">Admin</a>
+  </nav>
+</header>
+
+<div class="pets-hero">
+  <h2>🐾 Pets disponíveis</h2>
+  <p>Todos vacinados e esperando um lar cheio de amor 💕</p>
+  <p style="margin-top:10px; font-size:13px; color:#ce93d8; font-weight:700;" id="contador"></p>
+</div>
+
+<!-- Filtros -->
+<div class="filtros">
+  <button class="filtro-btn ativo" onclick="filtrar('todos', this)">🐾 Todos</button>
+  <button class="filtro-btn" onclick="filtrar('cachorro', this)">🐶 Cachorros</button>
+  <button class="filtro-btn" onclick="filtrar('gato', this)">🐱 Gatos</button>
+  <button class="filtro-btn" onclick="filtrar('pequeno', this)">🔹 Pequeno porte</button>
+  <button class="filtro-btn" onclick="filtrar('grande', this)">🔷 Grande porte</button>
+</div>
+
+<div class="pets-wrap">
+  <div class="animais-grid" id="grid">
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="medio">
+      <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=500&q=80" alt="Thor">
+      <div class="animal-info">
+        <h3>Thor 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Labrador</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Brincalhão e cheio de energia, ama crianças e outros animais. Ótimo companheiro para famílias ativas!</p>
+        <div class="animal-extra">
+          <span>Idade<strong>2 anos</strong></span>
+          <span>Porte<strong>Médio</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="gato" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&q=80" alt="Luna">
+      <div class="animal-info">
+        <h3>Luna 🐱</h3>
+        <div class="tags">
+          <span class="tag">Gato</span>
+          <span class="tag roxo">Siamês</span>
+          <span class="tag verde">Vacinada</span>
+        </div>
+        <p class="animal-desc">Carinhosa e tranquila, adora colo e sonecas no sofá. Perfeita para apartamento.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>1 ano</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Fêmea</strong></span>
+          <span>Castrada<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="grande">
+      <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=500&q=80" alt="Bob">
+      <div class="animal-info">
+        <h3>Bob 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Golden</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Leal, protetor e muito dócil. Ama passear e brincar no quintal. Precisa de espaço.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>3 anos</strong></span>
+          <span>Porte<strong>Grande</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Não</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="gato" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=500&q=80" alt="Mel">
+      <div class="animal-info">
+        <h3>Mel 🐱</h3>
+        <div class="tags">
+          <span class="tag">Gato</span>
+          <span class="tag roxo">Persa</span>
+          <span class="tag verde">Vacinada</span>
+        </div>
+        <p class="animal-desc">Filhotinha curiosa e muito fofa. Adora brincar com bolinhas e explorar cada cantinho.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>6 meses</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Fêmea</strong></span>
+          <span>Castrada<strong>Não</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=500&q=80" alt="Pipoca">
+      <div class="animal-info">
+        <h3>Pipoca 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Poodle</span>
+          <span class="tag verde">Vacinada</span>
+        </div>
+        <p class="animal-desc">Pequenininha, animada e cheia de amor pra dar. Cabe em qualquer lar e adora colo!</p>
+        <div class="animal-extra">
+          <span>Idade<strong>1 ano</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Fêmea</strong></span>
+          <span>Castrada<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="gato" data-porte="medio">
+      <img src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=500&q=80" alt="Nala">
+      <div class="animal-info">
+        <h3>Nala 🐱</h3>
+        <div class="tags">
+          <span class="tag">Gato</span>
+          <span class="tag roxo">Angorá</span>
+          <span class="tag verde">Vacinada</span>
+        </div>
+        <p class="animal-desc">Independente mas cheia de charme. Adora janelas ensolaradas e petiscos especiais.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>2 anos</strong></span>
+          <span>Porte<strong>Médio</strong></span>
+          <span>Sexo<strong>Fêmea</strong></span>
+          <span>Castrada<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="grande">
+      <img src="https://images.unsplash.com/photo-1568572933382-74d440642117?w=500&q=80" alt="Rex">
+      <div class="animal-info">
+        <h3>Rex 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Pastor Alemão</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Inteligente, obediente e muito leal. Ótimo para famílias com espaço e crianças maiores.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>4 anos</strong></span>
+          <span>Porte<strong>Grande</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500&q=80" alt="Bolinha">
+      <div class="animal-info">
+        <h3>Bolinha 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Shih Tzu</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Docinho e muito carinhoso. Ama ficar no colo e brincar com brinquedos. Ideal para apartamento.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>2 anos</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="gato" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=500&q=80" alt="Mia">
+      <div class="animal-info">
+        <h3>Mia 🐱</h3>
+        <div class="tags">
+          <span class="tag">Gato</span>
+          <span class="tag roxo">Misto</span>
+          <span class="tag verde">Vacinada</span>
+        </div>
+        <p class="animal-desc">Gatinha meiga e brincalhona. Se dá bem com crianças e outros gatos. Adora carinho!</p>
+        <div class="animal-extra">
+          <span>Idade<strong>1 ano</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Fêmea</strong></span>
+          <span>Castrada<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="medio">
+      <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=500&q=80" alt="Caramelo">
+      <div class="animal-info">
+        <h3>Caramelo 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">SRD</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Vira-lata caramelo clássico, cheio de amor e gratidão. Adora passear e brincar na grama.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>3 anos</strong></span>
+          <span>Porte<strong>Médio</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="gato" data-porte="pequeno">
+      <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=500&q=80" alt="Biscoito">
+      <div class="animal-info">
+        <h3>Biscoito 🐱</h3>
+        <div class="tags">
+          <span class="tag">Gato</span>
+          <span class="tag roxo">Misto</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Laranjinha fofo e muito curioso. Adora explorar a casa e dormir em lugares altos.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>8 meses</strong></span>
+          <span>Porte<strong>Pequeno</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Sim</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+    <div class="animal-card" data-tipo="cachorro" data-porte="grande">
+      <img src="https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=500&q=80" alt="Duke">
+      <div class="animal-info">
+        <h3>Duke 🐕</h3>
+        <div class="tags">
+          <span class="tag">Cachorro</span>
+          <span class="tag azul">Husky</span>
+          <span class="tag verde">Vacinado</span>
+        </div>
+        <p class="animal-desc">Majestoso e cheio de personalidade. Ama correr e precisa de bastante exercício diário.</p>
+        <div class="animal-extra">
+          <span>Idade<strong>2 anos</strong></span>
+          <span>Porte<strong>Grande</strong></span>
+          <span>Sexo<strong>Macho</strong></span>
+          <span>Castrado<strong>Não</strong></span>
+        </div>
+        <a href="Cadastro.HTML" class="btn-adotar">💕 Quero adotar</a>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="nenhum" id="nenhum">😿 Nenhum pet encontrado com esse filtro.</p>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">🐾</div>
+    <div class="footer-title">Toca dos Peludos</div>
+    <div class="footer-sub">Feito com muito 💕 — Todo pet merece um lar</div>
+  </div>
+</footer>
+
+<script>
+  const total = document.querySelectorAll('.animal-card').length;
+  document.getElementById('contador').textContent = total + ' peludinhos esperando por você 🐾';
+
+  function filtrar(tipo, btn) {
+    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    const cards = document.querySelectorAll('.animal-card');
+    let visiveis = 0;
+    cards.forEach(card => {
+      const match =
+        tipo === 'todos' ||
+        card.dataset.tipo === tipo ||
+        (tipo === 'pequeno' && card.dataset.porte === 'pequeno') ||
+        (tipo === 'grande'  && card.dataset.porte === 'grande');
+      card.classList.toggle('oculto', !match);
+      if (match) visiveis++;
+    });
+    document.getElementById('contador').textContent = visiveis + ' peludinhos encontrados 🐾';
+    document.getElementById('nenhum').style.display = visiveis === 0 ? 'block' : 'none';
+  }
+</script>
+
+</body>
+</html>
